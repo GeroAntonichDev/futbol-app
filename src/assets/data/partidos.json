@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "local": "Olimpia",
+    "visitante": "Cerro Porteño",
+    "goles_local": 2,
+    "goles_visitante": 1,
+    "estado": "en_vivo",
+    "minuto": "75'",
+    "fecha": "09/11/2026",
+    "estadio": "Manuel Ferreira"
+  },
+  {
+    "id": 2,
+    "local": "Libertad",
+    "visitante": "Guaraní",
+    "goles_local": 0,
+    "goles_visitante": 0,
+    "estado": "en_vivo",
+    "minuto": "32'",
+    "fecha": "09/11/2026",
+    "estadio": "Dr. Nicolás Leoz"
+  },
+  {
+    "id": 3,
+    "local": "Nacional",
+    "visitante": "Sportivo Luqueño",
+    "goles_local": 3,
+    "goles_visitante": 1,
+    "estado": "finalizado",
+    "minuto": "90'",
+    "fecha": "08/11/2026",
+    "estadio": "Arsenio Erico"
+  },
+  {
+    "id": 4,
+    "local": "Sportivo Ameliano",
+    "visitante": "River Plate",
+    "goles_local": 1,
+    "goles_visitante": 0,
+    "estado": "finalizado",
+    "minuto": "90'",
+    "fecha": "08/11/2026",
+    "estadio": "Luis Alfonso Giagni"
+  },
+  {
+    "id": 5,
+    "local": "Tacuary",
+    "visitante": "General Caballero",
+    "goles_local": 2,
+    "goles_visitante": 2,
+    "estado": "finalizado",
+    "minuto": "90'",
+    "fecha": "07/11/2026",
+    "estadio": "Toribio Vargas"
+  },
+  {
+    "id": 6,
+    "local": "Sportivo Trinidense",
+    "visitante": "2 de Mayo",
+    "goles_local": 0,
+    "goles_visitante": 0,
+    "estado": "proximo",
+    "minuto": "-",
+    "fecha": "10/11/2026",
+    "estadio": "Martín Torres"
+  },
+  {
+    "id": 7,
+    "local": "Recoleta",
+    "visitante": "Sol de América",
+    "goles_local": 0,
+    "goles_visitante": 0,
+    "estado": "proximo",
+    "minuto": "-",
+    "fecha": "10/11/2026",
+    "estadio": "Roque Battilana"
+  },
+  {
+    "id": 8,
+    "local": "Guaireña",
+    "visitante": "Resistencia",
+    "goles_local": 0,
+    "goles_visitante": 0,
+    "estado": "proximo",
+    "minuto": "-",
+    "fecha": "11/11/2026",
+    "estadio": "Parque del Guairá"
+  }
+]

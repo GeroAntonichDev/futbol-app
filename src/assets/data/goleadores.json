@@ -1,0 +1,12 @@
+[
+  { "nombre": "Roque Santa Cruz", "equipo": "Olimpia", "goles": 9, "asistencias": 3, "partidos": 11 },
+  { "nombre": "Diego Churín", "equipo": "Cerro Porteño", "goles": 8, "asistencias": 2, "partidos": 12 },
+  { "nombre": "Óscar Cardozo", "equipo": "Libertad", "goles": 7, "asistencias": 1, "partidos": 10 },
+  { "nombre": "Hernán Barcos", "equipo": "Guaraní", "goles": 6, "asistencias": 4, "partidos": 12 },
+  { "nombre": "Jorge Benítez", "equipo": "Nacional", "goles": 6, "asistencias": 2, "partidos": 11 },
+  { "nombre": "Brian Montenegro", "equipo": "Olimpia", "goles": 5, "asistencias": 3, "partidos": 10 },
+  { "nombre": "Marcelo Estigarribia", "equipo": "Cerro Porteño", "goles": 4, "asistencias": 5, "partidos": 12 },
+  { "nombre": "Alfio Oviedo", "equipo": "Sportivo Luqueño", "goles": 4, "asistencias": 1, "partidos": 11 },
+  { "nombre": "Facundo Barceló", "equipo": "River Plate", "goles": 3, "asistencias": 2, "partidos": 10 },
+  { "nombre": "Derlis Rodríguez", "equipo": "Tacuary", "goles": 3, "asistencias": 1, "partidos": 9 }
+]

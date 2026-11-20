@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Goleadores</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- COMPONENTE: ion-refresher -->
+  <ion-refresher slot="fixed" (ionRefresh)="cargarGoleadores($event)">
+    <ion-refresher-content pullingText="Actualizar goleadores" refreshingSpinner="crescent">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- COMPONENTE: ion-segment -->
+  <ion-segment [value]="criterio" (ionChange)="onCriterioChange($event)">
+    <ion-segment-button value="goles">
+      <ion-label>Goles</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="asistencias">
+      <ion-label>Asistencias</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- INDICADOR DE CARGA: ion-skeleton-text -->
+  @if (isLoading) {
+    <ion-list class="ion-margin-top">
+      @for (item of [1, 2, 3, 4, 5]; track $index) {
+        <ion-item>
+          <ion-avatar slot="start">
+            <ion-skeleton-text [animated]="true" style="width: 100%; height: 100%;"></ion-skeleton-text>
+          </ion-avatar>
+          <ion-label>
+            <h3><ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text></h3>
+            <p><ion-skeleton-text [animated]="true" style="width: 35%;"></ion-skeleton-text></p>
+          </ion-label>
+          <ion-skeleton-text slot="end" [animated]="true" style="width: 36px; height: 24px;"></ion-skeleton-text>
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <!-- MENSAJE DE ERROR -->
+  @if (!isLoading && errorMessage) {
+    <div class="error-box ion-text-center ion-padding">
+      <ion-icon name="alert-circle-outline" color="danger" class="error-icon"></ion-icon>
+      <h2>No se pudo cargar la tabla</h2>
+      <p>{{ errorMessage }}</p>
+      <ion-button color="primary" fill="outline" (click)="cargarGoleadores()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  }
+
+  <!-- LISTA DE GOLEADORES -->
+  @if (!isLoading && !errorMessage) {
+    <ion-list class="ion-margin-top">
+      <!-- COMPONENTE: ion-item-sliding -->
+      @for (jugador of goleadoresOrdenados; track jugador.nombre; let i = $index) {
+        <ion-item-sliding>
+          <ion-item>
+            <ion-badge slot="start" color="medium" class="rank-badge">{{ i + 1 }}</ion-badge>
+
+            <!-- COMPONENTE: ion-avatar -->
+            <ion-avatar slot="start" [style.background]="getColor(jugador.equipo)">
+              <span class="avatar-initials">{{ getInitials(jugador.nombre) }}</span>
+            </ion-avatar>
+
+            <ion-label>
+              <h2>{{ jugador.nombre }}</h2>
+              <p>{{ jugador.equipo }} · {{ jugador.partidos }} PJ</p>
+            </ion-label>
+
+            <!-- COMPONENTE: ion-chip -->
+            <ion-chip slot="end" [color]="criterio === 'goles' ? 'primary' : 'tertiary'">
+              <ion-icon [name]="criterio === 'goles' ? 'football-outline' : 'hand-left-outline'"></ion-icon>
+              <ion-label>{{ criterio === 'goles' ? jugador.goles : jugador.asistencias }}</ion-label>
+            </ion-chip>
+          </ion-item>
+
+          <ion-item-options side="end">
+            <ion-item-option color="success" (click)="votar(jugador)">
+              <ion-icon slot="icon-only" name="star-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      }
+    </ion-list>
+  }
+
+  <!-- COMPONENTE: ion-toast (feedback al votar) -->
+  <ion-toast
+    [isOpen]="toastOpen"
+    [message]="toastMessage"
+    [duration]="1800"
+    position="bottom"
+    (didDismiss)="toastOpen = false">
+  </ion-toast>
+</ion-content>

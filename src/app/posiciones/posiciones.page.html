@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Posiciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- COMPONENTE: ion-refresher -->
+  <ion-refresher slot="fixed" (ionRefresh)="cargarPosiciones($event)">
+    <ion-refresher-content pullingText="Actualizar tabla" refreshingSpinner="crescent">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- COMPONENTE: ion-searchbar -->
+  <ion-searchbar
+    [value]="busqueda"
+    (ionInput)="onBusqueda($event)"
+    placeholder="Buscar equipo..."
+    [debounce]="200">
+  </ion-searchbar>
+
+  <!-- INDICADOR DE CARGA: ion-skeleton-text -->
+  @if (isLoading) {
+    <ion-list>
+      @for (item of [1, 2, 3, 4, 5, 6]; track $index) {
+        <ion-item>
+          <ion-skeleton-text slot="start" [animated]="true" style="width: 24px;"></ion-skeleton-text>
+          <ion-skeleton-text
+            slot="start"
+            [animated]="true"
+            style="width: 34px; height: 34px; border-radius: 50%;">
+          </ion-skeleton-text>
+          <ion-label>
+            <ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text>
+          </ion-label>
+          <ion-skeleton-text slot="end" [animated]="true" style="width: 40px;"></ion-skeleton-text>
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <!-- MENSAJE DE ERROR -->
+  @if (!isLoading && errorMessage) {
+    <div class="error-box ion-text-center ion-padding">
+      <ion-icon name="alert-circle-outline" color="danger" class="error-icon"></ion-icon>
+      <h2>No se pudo cargar la tabla</h2>
+      <p>{{ errorMessage }}</p>
+      <ion-button color="primary" fill="outline" (click)="cargarPosiciones()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  }
+
+  <!-- TABLA DE POSICIONES -->
+  @if (!isLoading && !errorMessage) {
+    <div>
+      <ion-grid class="table-grid">
+        <!-- COMPONENTE: ion-grid / ion-row / ion-col -->
+        <ion-row class="table-header ion-align-items-center">
+          <ion-col size="1">#</ion-col>
+          <ion-col size="6">Equipo</ion-col>
+          <ion-col size="1" class="ion-text-center">PJ</ion-col>
+          <ion-col size="1" class="ion-text-center">DG</ion-col>
+          <ion-col size="3" class="ion-text-center">PTS</ion-col>
+        </ion-row>
+
+        @for (fila of posicionesFiltradas; track fila.equipo) {
+          <ion-row class="table-row ion-align-items-center">
+            <ion-col size="1">
+              <ion-badge [color]="colorPosicion(fila.posicion)">{{ fila.posicion }}</ion-badge>
+            </ion-col>
+
+            <ion-col size="6" class="team-cell">
+              <ion-avatar [style.background]="getColor(fila.equipo)" class="mini-avatar">
+                <span class="avatar-initials">{{ getInitials(fila.equipo) }}</span>
+              </ion-avatar>
+              <span class="team-name-table">{{ fila.equipo }}</span>
+            </ion-col>
+
+            <ion-col size="1" class="ion-text-center">{{ fila.pj }}</ion-col>
+            <ion-col size="1" class="ion-text-center" [class.negativo]="fila.dg < 0">
+              {{ fila.dg > 0 ? '+' + fila.dg : fila.dg }}
+            </ion-col>
+            <ion-col size="3" class="ion-text-center">
+              <ion-badge color="primary">{{ fila.pts }}</ion-badge>
+            </ion-col>
+          </ion-row>
+        }
+      </ion-grid>
+
+      <!-- COMPONENTE: ion-chip -->
+      <div class="leyenda ion-margin-top">
+        <ion-chip color="success" [outline]="true">
+          <ion-label>Zona de copa</ion-label>
+        </ion-chip>
+        <ion-chip color="warning" [outline]="true">
+          <ion-label>Playoff</ion-label>
+        </ion-chip>
+      </div>
+    </div>
+  }
+</ion-content>

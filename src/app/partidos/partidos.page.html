@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Partidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- COMPONENTE: ion-refresher -->
+  <ion-refresher slot="fixed" (ionRefresh)="cargarPartidos($event)">
+    <ion-refresher-content pullingText="Actualizar marcadores" refreshingSpinner="crescent">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- COMPONENTE: ion-searchbar -->
+  <ion-searchbar
+    [value]="busqueda"
+    (ionInput)="onBusqueda($event)"
+    placeholder="Buscar equipo..."
+    [debounce]="200">
+  </ion-searchbar>
+
+  <!-- COMPONENTE: ion-segment -->
+  <ion-segment [value]="filtroEstado" (ionChange)="onFiltroChange($event)">
+    <ion-segment-button value="todos">
+      <ion-label>Todos</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="en_vivo">
+      <ion-label>En vivo</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="proximo">
+      <ion-label>Próximos</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="finalizado">
+      <ion-label>Finalizados</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- INDICADOR DE CARGA: ion-skeleton-text -->
+  @if (isLoading) {
+    <div class="ion-margin-top">
+      @for (item of [1, 2, 3]; track $index) {
+        <ion-card>
+          <ion-card-content>
+            <ion-skeleton-text [animated]="true" style="width: 40%; margin: 0 auto 12px;"></ion-skeleton-text>
+            <div class="skeleton-row">
+              <ion-skeleton-text [animated]="true" style="width: 52px; height: 52px; border-radius: 50%;"></ion-skeleton-text>
+              <ion-skeleton-text [animated]="true" style="width: 20%; height: 28px;"></ion-skeleton-text>
+              <ion-skeleton-text [animated]="true" style="width: 52px; height: 52px; border-radius: 50%;"></ion-skeleton-text>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      }
+    </div>
+  }
+
+  <!-- MENSAJE DE ERROR -->
+  @if (!isLoading && errorMessage) {
+    <div class="error-box ion-text-center ion-padding">
+      <ion-icon name="alert-circle-outline" color="danger" class="error-icon"></ion-icon>
+      <h2>No se pudieron cargar los partidos</h2>
+      <p>{{ errorMessage }}</p>
+      <ion-button color="primary" fill="outline" (click)="cargarPartidos()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  }
+
+  <!-- SIN RESULTADOS -->
+  @if (!isLoading && !errorMessage && partidosFiltrados.length === 0) {
+    <div class="ion-text-center ion-padding">
+      <ion-icon name="football-outline" color="medium" class="error-icon"></ion-icon>
+      <p>No hay partidos que coincidan con el filtro.</p>
+    </div>
+  }
+
+  <!-- LISTADO DE PARTIDOS -->
+  @if (!isLoading && !errorMessage && partidosFiltrados.length > 0) {
+    <div>
+      @for (partido of partidosFiltrados; track partido.id) {
+        <ion-card>
+          <ion-card-content>
+            <div class="ion-text-center ion-margin-bottom">
+              <ion-badge [color]="estadoColor(partido.estado)">
+                {{ estadoTexto(partido) }}
+              </ion-badge>
+            </div>
+
+            <ion-grid>
+              <ion-row class="ion-align-items-center ion-text-center">
+                <ion-col size="4">
+                  <ion-avatar [style.background]="getColor(partido.local)" class="team-avatar">
+                    <span class="avatar-initials">{{ getInitials(partido.local) }}</span>
+                  </ion-avatar>
+                  <p class="team-name">{{ partido.local }}</p>
+                </ion-col>
+
+                <ion-col size="4">
+                  @if (partido.estado !== 'proximo') {
+                    <h1 class="score">
+                      {{ partido.goles_local }} - {{ partido.goles_visitante }}
+                    </h1>
+                  }
+                  @if (partido.estado === 'proximo') {
+                    <h2 class="score vs">VS</h2>
+                  }
+                </ion-col>
+
+                <ion-col size="4">
+                  <ion-avatar [style.background]="getColor(partido.visitante)" class="team-avatar">
+                    <span class="avatar-initials">{{ getInitials(partido.visitante) }}</span>
+                  </ion-avatar>
+                  <p class="team-name">{{ partido.visitante }}</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <div class="match-meta ion-text-center">
+              <ion-icon name="calendar-outline"></ion-icon> {{ partido.fecha }}
+              &nbsp;·&nbsp;
+              <ion-icon name="location-outline"></ion-icon> {{ partido.estadio }}
+            </div>
+          </ion-card-content>
+        </ion-card>
+      }
+    </div>
+  }
+</ion-content>
